@@ -41,11 +41,22 @@ Currently using a mock API:
 getRides(pickup, drop)
 ```
 
-### Expected Backend API:
+------------------------------------------------------------------------
+
+## 🔗 API Contract (Frontend ↔ Backend)
+
+The frontend expects the backend to implement the following endpoint:
+
+### Endpoint
 
 GET /rides?pickup=`<pickup>`{=html}&drop=`<drop>`{=html}
 
-### Sample Response:
+### Query Params
+
+-   pickup → string (e.g. "Home")
+-   drop → string (e.g. "Office")
+
+### Sample Response
 
 ``` json
 [
@@ -58,6 +69,12 @@ GET /rides?pickup=`<pickup>`{=html}&drop=`<drop>`{=html}
   }
 ]
 ```
+
+### Notes
+
+-   Response must be an array of ride objects
+-   Each ride must include: id, driverName, carType, price, ETA
+-   This structure is already used by the frontend UI
 
 ------------------------------------------------------------------------
 
