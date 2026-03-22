@@ -1,16 +1,25 @@
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import RideCard from '../components/RideCard';
-import { useState } from 'react';
-import { Button } from 'react-native';
-
-const rides = [
-  { id: '1', driverName: 'Rahul', carType: 'Mini', price: 120, ETA: '5 mins' },
-  { id: '2', driverName: 'Aman', carType: 'Sedan', price: 180, ETA: '8 mins' },
-  { id: '3', driverName: 'Ravi', carType: 'SUV', price: 250, ETA: '10 mins' },
-];
+import { useEffect, useState } from 'react';
+import { getRides } from '../api/api';
+// const rides = [
+//   { id: '1', driverName: 'Rahul', carType: 'Mini', price: 120, ETA: '5 mins' },
+//   { id: '2', driverName: 'Aman', carType: 'Sedan', price: 180, ETA: '8 mins' },
+//   { id: '3', driverName: 'Ravi', carType: 'SUV', price: 250, ETA: '10 mins' },
+// ];
 
 export default function RideListScreen({ route, navigation  }) {
   const [selectedRideId, setSelectedRideId] = useState(null);
+  const [rides, setRides] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+    const data = await getRides(pickup, drop);
+    setRides(data);
+  };
+
+  fetchData();
+  }, []);
   const pickup = route?.params?.pickup || 'Unknown';
   const drop = route?.params?.drop || 'Unknown';
 

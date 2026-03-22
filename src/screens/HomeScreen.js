@@ -1,9 +1,14 @@
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity} from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function HomeScreen({ navigation }) {
   const [pickup, setPickup] = useState('');
   const [drop, setDrop] = useState('');
+
+  useEffect(() => {
+    setPickup('');
+    setDrop('');
+  }, []);
 
   return (
     <View style={styles.container}>

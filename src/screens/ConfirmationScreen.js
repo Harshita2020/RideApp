@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-export default function ConfirmationScreen({ route }) {
+export default function ConfirmationScreen({ route, navigation}) {
   const { ride, pickup, drop } = route.params;
 
   return (
@@ -31,6 +31,17 @@ export default function ConfirmationScreen({ route }) {
           ₹{ride.price}
         </Text>
       </View>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() =>
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Home' }],
+          })
+        }
+      >
+        <Text style={styles.buttonText}>Go to Home</Text>
+      </TouchableOpacity>
 
     </View>
   );
@@ -44,6 +55,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
+  button: {
+  backgroundColor: '#007bff',
+  padding: 12,
+  borderRadius: 10,
+  marginTop: 20,
+},
+buttonText: {
+  color: '#fff',
+  fontWeight: 'bold',
+},
   card: {
     width: '100%',
     backgroundColor: '#fff',
