@@ -6,6 +6,7 @@ const rides = [
   { id: '2', driverName: 'Aman', carType: 'Sedan', price: 180, ETA: '8 mins' },
   { id: '3', driverName: 'Ravi', carType: 'SUV', price: 250, ETA: '10 mins' },
 ];
+// const rides = []
 
 // 🔹 Simulate API call
 export const getRides = async (pickup, drop) => {

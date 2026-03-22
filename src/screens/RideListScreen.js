@@ -11,6 +11,7 @@ import { getRides } from '../api/api';
 export default function RideListScreen({ route, navigation  }) {
   const [selectedRideId, setSelectedRideId] = useState(null);
   const [rides, setRides] = useState([]);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,11 +21,41 @@ export default function RideListScreen({ route, navigation  }) {
 
   fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+    setLoading(true);
+    const data = await getRides(pickup, drop);
+    setRides(data);
+    setLoading(false);
+  };
+
+    fetchData();
+  }, []);
   const pickup = route?.params?.pickup || 'Unknown';
   const drop = route?.params?.drop || 'Unknown';
 
-  
+if (loading) {
   return (
+    <View style={styles.center}>
+      <Text style={styles.loadingEmoji}>🚗</Text>
+      <Text style={styles.loadingText}>Finding rides near you...</Text>
+    </View>
+  );
+}
+
+if (!rides.length) {
+  return (
+    <View style={styles.center}>
+      <Text style={styles.emptyEmoji}>😕</Text>
+      <Text style={styles.emptyTitle}>No rides available</Text>
+      <Text style={styles.emptySubtext}>
+        Try a different pickup or drop location
+      </Text>
+    </View>
+  );
+}
+ return (
     <View style={styles.container}>
 
       <Text style={styles.routeText}>
@@ -45,12 +76,17 @@ export default function RideListScreen({ route, navigation  }) {
           showsVerticalScrollIndicator={false}
         />
       </View>
+      {selectedRideId && (
+              <Text style={{ marginBottom: 10 }}>
+                Selected Ride: {rides.find(r => r.id === selectedRideId)?.carType}
+              </Text>
+            )}
 
       <TouchableOpacity
         onPress={() => {
           const selectedRide = rides.find(r => r.id === selectedRideId);
 
-          navigation.navigate('Confirm', {
+          navigation.replace('Confirm', {
             ride: selectedRide,
             pickup,
             drop,
@@ -75,6 +111,40 @@ const styles = StyleSheet.create({
   padding: 15,
   paddingBottom: 30,
   backgroundColor: '#f5f5f5',
+},
+center: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: 20,
+  backgroundColor: '#f5f5f5',
+},
+
+loadingEmoji: {
+  fontSize: 40,
+  marginBottom: 10,
+},
+
+loadingText: {
+  fontSize: 16,
+  color: '#555',
+},
+
+emptyEmoji: {
+  fontSize: 40,
+  marginBottom: 10,
+},
+
+emptyTitle: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  marginBottom: 5,
+},
+
+emptySubtext: {
+  fontSize: 14,
+  color: '#777',
+  textAlign: 'center',
 },
 button: {
   backgroundColor: '#007bff',

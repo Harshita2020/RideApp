@@ -1,8 +1,21 @@
+import { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-
+import { BackHandler } from 'react-native';
 export default function ConfirmationScreen({ route, navigation}) {
   const { ride, pickup, drop } = route.params;
-
+  useEffect(() => {
+    navigation.setOptions({ headerLeft: () => null });
+  }, [])
+  
+  useEffect(() => {
+    const backAction = () => true; // block back
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+    return () => backHandler.remove();
+  }, []);
+  
   return (
     <View style={styles.container}>
       
@@ -31,6 +44,7 @@ export default function ConfirmationScreen({ route, navigation}) {
           ₹{ride.price}
         </Text>
       </View>
+      
       <TouchableOpacity
         style={styles.button}
         onPress={() =>
